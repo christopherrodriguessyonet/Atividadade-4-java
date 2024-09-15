@@ -73,7 +73,9 @@ public class BookResource {
     @Path("/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     public Book findById(@PathParam("id") Long id) {
-        return Book.findById(id);
+        return Book.findByIdOptional(id)
+            .map(entity -> (Book) entity)
+            .orElseThrow(() -> new WebApplicationException("Livro com ID " + id + " não encontrado", 404));
     }
 
     @PUT
